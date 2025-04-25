@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="">
       {/* Cabeçalho */}
       <header className="container py-4 px-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
