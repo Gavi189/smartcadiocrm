@@ -1,6 +1,7 @@
 "use client";
 import { ActivitySquare, Grid3X3, Heart } from "lucide-react";
 import { Button } from "./_components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -17,9 +18,11 @@ export default function Home() {
             <span className="text-foreground">SmartCardioCRM</span>
           </h1>
         </div>
-        <Button variant="secondary" className="rounded-md">
-          Entrar
-        </Button>
+        <Link href="/login">
+          <Button variant="secondary" className="rounded-md">
+            Entrar
+          </Button>
+        </Link>
       </header>
 
       {/* Seção Hero */}
