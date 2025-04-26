@@ -18,7 +18,7 @@ function toast({
   duration = 5000,
 }: ToastProps) {
   const id = sonnerToast.custom(
-    (t) => (
+    () => (
       <div className="flex items-start gap-3 rounded-md bg-popover border border-border p-4 shadow-sm w-full max-w-sm">
         <div className="flex-1">
           {title && (
@@ -50,7 +50,7 @@ function toast({
     {
       duration,
       className: variant === "destructive" ? "border-destructive" : "",
-      onDismiss: (t) => sonnerToast.dismiss(t),
+      onDismiss: () => sonnerToast.dismiss(),
     }
   );
 
@@ -59,7 +59,7 @@ function toast({
     dismiss: () => sonnerToast.dismiss(id),
     update: (props: ToastProps) => {
       sonnerToast.custom(
-        (t) => (
+        () => (
           <div className="flex items-start gap-3 rounded-md bg-popover border border-border p-4 shadow-sm w-full max-w-sm">
             <div className="flex-1">
               {props.title && (
