@@ -80,7 +80,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="card-hover section-card bg-white border-blue-300">
+        <Card className="card-hover section-card bg-white border-slate-100">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">
@@ -98,7 +98,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card bg-white border-blue-300">
+        <Card className="card-hover section-card bg-white border-slate-100">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Novos Pacientes</p>
@@ -114,7 +114,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card bg-white border-blue-300">
+        <Card className="card-hover section-card bg-white border-slate-100">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Em Espera</p>
@@ -129,7 +129,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card bg-white border-blue-300">
+        <Card className="card-hover section-card bg-white border-slate-100">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Casos Críticos</p>
@@ -149,7 +149,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 card-hover section-card bg-white border-blue-300">
+        <Card className="lg:col-span-2 card-hover section-card bg-white border-slate-100">
           <CardHeader>
             <CardTitle className="flex items-center">
               <BarChart className="h-5 w-5 mr-2 text-blue-700" />
@@ -179,7 +179,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card bg-white border-blue-300">
+        <Card className="card-hover section-card bg-white border-slate-100">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Heart className="h-5 w-5 mr-2 text-blue-700" />
@@ -228,7 +228,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card className="card-hover section-card bg-white border-blue-300">
+      <Card className="card-hover section-card bg-white border-slate-100">
         <CardHeader>
           <CardTitle className="flex items-center">
             <CalendarClock className="h-5 w-5 mr-2 text-blue-700" />
@@ -242,7 +242,7 @@ export default function Dashboard() {
             {upcomingAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="bg-muted/40 p-4 rounded-lg border border-blue-300  flex items-center gap-4"
+                className="bg-muted/40 p-4 rounded-lg border border-slate-100  flex items-center gap-4"
               >
                 <div className="bg-cardio-100 h-10 w-10 rounded-full flex items-center justify-center text-blue-700 font-medium">
                   {appointment.avatar}
