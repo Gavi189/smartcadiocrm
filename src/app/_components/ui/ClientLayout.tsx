@@ -10,9 +10,14 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isDashboardPage = pathname === "/dashboard";
+  const isLayoutPage = [
+    "/dashboard",
+    "/patients",
+    "/patient-register",
+    "/medical-record",
+  ].includes(pathname);
 
-  return isDashboardPage ? (
+  return isLayoutPage ? (
     <div className="min-h-screen flex bg-slate-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
