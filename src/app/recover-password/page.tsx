@@ -55,23 +55,20 @@ export default function RecoverPassword() {
                 id="email"
                 type="email"
                 placeholder="seu@email.com"
+                className="border-blue-300"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-cardio"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full " disabled={isLoading}>
               {isLoading ? "Enviando..." : "Recuperar senha"}
             </Button>
 
             <div className="text-center mt-4">
               <Button
-                variant="secondary"
+                variant="link"
                 className="border-none underline-offset-4 hover:underline"
                 onClick={() => router.push("/login")} // Ajustado para /login, já que o link "Voltar para login" deve apontar para a página de login
               >

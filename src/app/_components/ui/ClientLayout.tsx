@@ -13,7 +13,7 @@ export default function ClientLayout({
   const isDashboardPage = pathname === "/dashboard";
 
   return isDashboardPage ? (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-slate-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header />

@@ -77,6 +77,7 @@ export default function Register() {
               id="name"
               type="text"
               placeholder="Seu nome"
+              className="border-blue-300"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -89,6 +90,7 @@ export default function Register() {
               id="email"
               type="email"
               placeholder="seu@email.com"
+              className="border-blue-300"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -101,6 +103,7 @@ export default function Register() {
               id="password"
               type="password"
               placeholder="********"
+              className="border-blue-300"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -113,6 +116,7 @@ export default function Register() {
               id="confirmPassword"
               type="password"
               placeholder="********"
+              className="border-blue-300"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -128,7 +132,7 @@ export default function Register() {
             <Label htmlFor="terms" className="text-sm font-normal">
               Eu aceito os
               <Button
-                variant="secondary"
+                variant="link"
                 size={"sm"}
                 className="border-none underline-offset-4 hover:underline"
               >
@@ -136,7 +140,7 @@ export default function Register() {
               </Button>
               e
               <Button
-                variant="secondary"
+                variant="link"
                 size={"sm"}
                 className="border-none underline-offset-4 hover:underline"
               >
@@ -145,17 +149,13 @@ export default function Register() {
             </Label>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-gradient-cardio"
-            disabled={isLoading}
-          >
+          <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Criando conta..." : "Criar conta"}
           </Button>
 
           <div className="text-center mt-4">
             <Button
-              variant="secondary"
+              variant="link"
               className="border-none underline-offset-4 hover:underline"
               onClick={() => router.push("/login")} // Ajustado para /login
             >

@@ -62,25 +62,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-6 p-6 ">
+      <div className="flex justify-between items-center ">
         <div>
           <h1 className="text-3xl font-bold text-gradient-cardio mb-1">
             Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Bem-vindo, Dr. Rafael! Aqui está um resumo da sua clínica.
+            Bem-vindo, Dra. Paula! Aqui está um resumo da sua clínica.
           </p>
         </div>
 
-        <Button className="bg-cardio-600 hover:bg-cardio-700">
+        <Button>
           <FilePlus2 className="h-4 w-4 mr-2" />
           Nova Consulta
         </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="card-hover section-card">
+        <Card className="card-hover section-card bg-white border-blue-300">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">
@@ -98,7 +98,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card">
+        <Card className="card-hover section-card bg-white border-blue-300">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Novos Pacientes</p>
@@ -114,7 +114,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card">
+        <Card className="card-hover section-card bg-white border-blue-300">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Em Espera</p>
@@ -129,7 +129,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card">
+        <Card className="card-hover section-card bg-white border-blue-300">
           <CardContent className="p-4 flex justify-between items-center">
             <div>
               <p className="text-muted-foreground text-sm">Casos Críticos</p>
@@ -149,11 +149,11 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 card-hover section-card">
+        <Card className="lg:col-span-2 card-hover section-card bg-white border-blue-300">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <BarChart className="h-5 w-5 mr-2 text-cardio-600" />
-              Consultas Realizadas
+              <BarChart className="h-5 w-5 mr-2 text-blue-700" />
+              <span className="text-gradient-cardio">Consultas Realizadas</span>
             </CardTitle>
             <CardDescription>Tendência dos últimos 7 meses</CardDescription>
           </CardHeader>
@@ -179,11 +179,13 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="card-hover section-card">
+        <Card className="card-hover section-card bg-white border-blue-300">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Heart className="h-5 w-5 mr-2 text-cardio-600" />
-              Distribuição de Risco
+              <Heart className="h-5 w-5 mr-2 text-blue-700" />
+              <span className="text-gradient-cardio">
+                Distribuição de Risco
+              </span>
             </CardTitle>
             <CardDescription>Categorias de risco dos pacientes</CardDescription>
           </CardHeader>
@@ -226,11 +228,12 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card className="card-hover section-card">
+      <Card className="card-hover section-card bg-white border-blue-300">
         <CardHeader>
           <CardTitle className="flex items-center">
-            <CalendarClock className="h-5 w-5 mr-2 text-cardio-600" />
-            Próximas Consultas
+            <CalendarClock className="h-5 w-5 mr-2 text-blue-700" />
+
+            <span className="text-gradient-cardio">Próximas Consultas</span>
           </CardTitle>
           <CardDescription>Consultas agendadas para hoje</CardDescription>
         </CardHeader>
@@ -239,13 +242,15 @@ export default function Dashboard() {
             {upcomingAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="bg-muted/40 p-4 rounded-lg border border-border flex items-center gap-4"
+                className="bg-muted/40 p-4 rounded-lg border border-blue-300  flex items-center gap-4"
               >
-                <div className="bg-cardio-100 h-10 w-10 rounded-full flex items-center justify-center text-cardio-700 font-medium">
+                <div className="bg-cardio-100 h-10 w-10 rounded-full flex items-center justify-center text-blue-700 font-medium">
                   {appointment.avatar}
                 </div>
                 <div>
-                  <h4 className="font-medium">{appointment.patient}</h4>
+                  <h4 className="font-medium text-blue-700">
+                    {appointment.patient}
+                  </h4>
                   <div className="flex gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" /> {appointment.time}
@@ -258,9 +263,7 @@ export default function Dashboard() {
           </div>
           <div className="mt-4 flex justify-center">
             <Link href="/agenda">
-              <Button variant="outline" className="text-cardio-700">
-                Ver agenda completa
-              </Button>
+              <Button className="text-white">Ver agenda completa</Button>
             </Link>
           </div>
         </CardContent>

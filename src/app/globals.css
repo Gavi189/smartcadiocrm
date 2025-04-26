@@ -20,63 +20,73 @@
 :root {
   --radius: 0.5rem;
 
-  --background: #ffffff;
+  --background: #ffffff; /* Fundo branco puro, usado na página inicial e na sidebar do Vite */
   --background-rgb: 255, 255, 255;
-  --foreground: #000000;
+  --foreground: #000000; /* Texto principal preto, usado em títulos e textos principais */
   --foreground-rgb: 0, 0, 0;
-  --card: #f3f3f;
-  --card-rgb: 243, 244, 246;
-  --card-foreground: #000000;
+  --card: #ffffff; /* Cartões brancos puros, ajustado para corresponder ao Vite (era #f3f3f3) */
+  --card-rgb: 255, 255, 255;
+  --card-foreground: #000000; /* Texto nos cartões preto, consistente com o Vite */
   --card-foreground-rgb: 0, 0, 0;
-  --primary: #2563eb;
+  --primary: #2563eb; /* Azul principal, usado em botões e ícones, já está correto */
   --primary-rgb: 37, 99, 235;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #ffffff; /* Texto branco em botões primários, já está correto */
   --primary-foreground-rgb: 255, 255, 255;
-  --secondary: #ffffff;
-  --secondary-rgb: 155, 44, 44;
-  --secondary-foreground: #2563eb;
-  --secondary-foreground-rgb: 255, 255, 255;
-  --accent: #2563eb;
-  --accent-rgb: 124, 28, 28;
-  --muted: #f7f7f7;
+  --secondary: #ffffff; /* Fundo branco para botões secundários, já está correto */
+  --secondary-rgb: 255, 255, 255;
+  --secondary-foreground: #2563eb; /* Texto azul para botões secundários, já está correto */
+  --secondary-foreground-rgb: 37, 99, 235;
+  --accent: #e6f0fa; /* Azul claro para hover, ajustado para corresponder ao Vite (era #2563eb) */
+  --accent-rgb: 230, 240, 250;
+  --muted: #f7f7f7; /* Cinza muito claro para fundos muted, já está correto */
   --muted-rgb: 247, 247, 247;
-  --muted-foreground: #4b5563;
-  --muted-foreground-rgb: 75, 85, 99;
-  --border: #2563eb;
-  --border-rgb: 229, 231, 235;
-  --input: #e5e7eb;
+  --muted-foreground: #6b7280; /* Cinza médio para textos secundários, ajustado para corresponder ao Vite */
+  --muted-foreground-rgb: 107, 114, 128;
+  --border: #d1d5db; /* Borda cinza claro, ajustado para corresponder ao Vite (era #2563eb) */
+  --border-rgb: 209, 213, 219;
+  --input: #e5e7eb; /* Cinza claro para inputs, já está correto */
   --input-rgb: 229, 231, 235;
-  --ring: #2563eb;
-  --ring-rgb: 155, 44, 44;
+  --ring: #2563eb; /* Anel azul para foco, já está correto */
+  --ring-rgb: 37, 99, 235;
 }
 
 .dark {
-  --background: #1a1a1a;
-  --background-rgb: 26, 26, 26;
-  --foreground: #ffffff;
+  --background: #111827; /* Fundo cinza escuro para o modo escuro, ajustado para um tom mais escuro e consistente */
+  --background-rgb: 17, 24, 39;
+  --foreground: #ffffff; /* Texto branco no modo escuro, já está correto */
   --foreground-rgb: 255, 255, 255;
-  --card: #2d2d2d;
-  --card-rgb: 45, 45, 45;
-  --card-foreground: #ffffff;
+  --card: #1f2a44; /* Cartões cinza escuro no modo escuro, ajustado para um tom mais escuro */
+  --card-rgb: 31, 42, 68;
+  --card-foreground: #ffffff; /* Texto branco nos cartões no modo escuro, já está correto */
   --card-foreground-rgb: 255, 255, 255;
-  --primary: #2563eb;
+  --primary: #2563eb; /* Azul principal mantido no modo escuro, já está correto */
   --primary-rgb: 37, 99, 235;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #ffffff; /* Texto branco em botões primários, já está correto */
   --primary-foreground-rgb: 255, 255, 255;
-  --secondary: #2563eb;
-  --secondary-rgb: 155, 44, 44;
-  --secondary-foreground: #ffffff;
-  --secondary-foreground-rgb: 255, 255, 255;
-  --accent: #2563eb;
-  --accent-rgb: 124, 28, 28;
-  --muted: #2d2d2d;
-  --muted-rgb: 45, 45, 45;
-  --muted-foreground: #b0b0b0;
-  --muted-foreground-rgb: 176, 176, 176;
-  --border: #4b4b4b;
-  --border-rgb: 75, 75, 75;
-  --input: #4b4b4b;
-  --input-rgb: 75, 75, 75;
-  --ring: #2563eb;
-  --ring-rgb: 155, 44, 44;
+  --secondary: #1f2a44; /* Fundo cinza escuro para botões secundários no modo escuro */
+  --secondary-rgb: 31, 42, 68;
+  --secondary-foreground: #60a5fa; /* Texto azul mais claro para botões secundários no modo escuro */
+  --secondary-foreground-rgb: 96, 165, 250;
+  --accent: #374151; /* Cinza médio para hover no modo escuro, ajustado para um tom mais claro que o fundo */
+  --accent-rgb: 55, 65, 81;
+  --muted: #374151; /* Cinza médio para fundos muted no modo escuro */
+  --muted-rgb: 55, 65, 81;
+  --muted-foreground: #9ca3af; /* Cinza claro para textos secundários no modo escuro */
+  --muted-foreground-rgb: 156, 163, 175;
+  --border: #4b5563; /* Borda cinza escuro no modo escuro, ajustado para um tom mais escuro */
+  --border-rgb: 75, 85, 99;
+  --input: #4b5563; /* Cinza escuro para inputs no modo escuro, ajustado para um tom mais escuro */
+  --input-rgb: 75, 85, 99;
+  --ring: #60a5fa; /* Anel azul mais claro para foco no modo escuro */
+  --ring-rgb: 96, 165, 250;
+}
+
+@layer components {
+  .bg-gradient-cardio {
+    @apply bg-gradient-to-b from-blue-600 to-blue-700;
+  }
+
+  .text-gradient-cardio {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-blue-600 to-blue-800;
+  }
 }

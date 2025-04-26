@@ -37,7 +37,7 @@ export default function Login() {
             fill="#0077ff"
             strokeWidth={1.5}
           />
-          <h1 className="text-3xl font-bold text-gradient-cardio mt-4">
+          <h1 className="text-gradient-cardio text-3xl font-bold text-gradient-cardio mt-4">
             SmartCardioCRM
           </h1>
           <p className="text-muted-foreground mt-2 text-center">
@@ -52,6 +52,7 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="seu@email.com"
+              className="border-blue-300"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -64,6 +65,7 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="******"
+              className="border-blue-300"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -73,7 +75,7 @@ export default function Login() {
           <div className="text-right">
             <Link href="/recover-password">
               <Button
-                variant="secondary"
+                variant="link"
                 className="border-none underline-offset-4 hover:underline"
               >
                 Esqueci minha senha
@@ -81,11 +83,7 @@ export default function Login() {
             </Link>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-gradient-cardio"
-            disabled={isLoading}
-          >
+          <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}
           </Button>
 
@@ -93,7 +91,7 @@ export default function Login() {
             <span className="text-muted-foreground">Não tem uma conta?</span>{" "}
             <Link href="/register">
               <Button
-                variant="secondary"
+                variant="link"
                 className="border-none underline-offset-4 hover:underline"
               >
                 Registre-se

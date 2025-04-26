@@ -70,14 +70,14 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        "bg-white h-screen flex flex-col border-r border-border transition-all duration-300",
+        "bg-white h-auto flex flex-col border-r border-border transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >
       <div className="flex items-center justify-between p-4">
         {!collapsed && (
-          <div className="font-bold text-xl text-cardio-700 flex items-center gap-2">
-            <Heart className="text-cardio-600" fill="#2563eb" size={24} />
+          <div className="font-bold text-xl text-gradient-cardio flex items-center gap-2">
+            <Heart fill="#2563eb" size={24} />
             <span>SmartCardio</span>
           </div>
         )}
@@ -85,13 +85,13 @@ export default function Sidebar() {
           variant="ghost"
           size="icon"
           onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto text-muted-foreground hover:text-foreground"
+          className="ml-auto text-text-muted-foreground hover:text-foreground"
         >
           {collapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
         </Button>
       </div>
 
-      <div className="mt-6 flex flex-col gap-1 px-2">
+      <div className="mt-6 flex flex-col gap-1 px-2 text-blue-700">
         {menuItems.map((item) => (
           <SidebarItem
             key={item.path}
