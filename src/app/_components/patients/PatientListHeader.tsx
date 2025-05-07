@@ -18,10 +18,7 @@ const PatientListHeader = () => {
         </p>
       </div>
 
-      <Button
-        className="bg-cardio-600 hover:bg-cardio-700 text-white"
-        onClick={() => router.push("/patient-register")}
-      >
+      <Button onClick={() => router.push("/patient-register")}>
         <Plus className="h-4 w-4 mr-2" />
         Novo Paciente
       </Button>

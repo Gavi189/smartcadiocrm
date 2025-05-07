@@ -34,7 +34,7 @@ export default function EvolutionHistory() {
   return (
     <div className="space-y-4">
       {records.map((record) => (
-        <Card key={record.id} className="card-hover">
+        <Card key={record.id} className="card-hover bg-white border-slate-100">
           <CardContent className="p-4">
             <div className="flex justify-between items-start">
               <div>
@@ -46,7 +46,7 @@ export default function EvolutionHistory() {
                 </div>
                 <p className="text-sm line-clamp-2">{record.brief}</p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button size="sm">
                 <FileEdit className="h-4 w-4 mr-2" />
                 Ver
               </Button>

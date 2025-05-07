@@ -161,7 +161,7 @@ export default function PatientRegister() {
                             <SelectValue placeholder="Selecione" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-white border-slate-200">
                           <SelectItem value="M">Masculino</SelectItem>
                           <SelectItem value="F">Feminino</SelectItem>
                         </SelectContent>
@@ -187,7 +187,7 @@ export default function PatientRegister() {
                             <SelectValue placeholder="Selecione" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className=" bg-white border-slate-200">
                           <SelectItem value="solteiro">Solteiro(a)</SelectItem>
                           <SelectItem value="casado">Casado(a)</SelectItem>
                           <SelectItem value="divorciado">
@@ -380,11 +380,7 @@ export default function PatientRegister() {
                 >
                   Cancelar
                 </Button>
-                <Button
-                  type="submit"
-                  className="bg-cardio-600 hover:bg-cardio-700 text-white"
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" disabled={isSubmitting}>
                   <Save className="h-4 w-4 mr-2" />
                   {isSubmitting ? "Salvando..." : "Salvar Paciente"}
                 </Button>

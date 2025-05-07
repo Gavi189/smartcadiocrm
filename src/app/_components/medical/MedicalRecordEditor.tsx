@@ -97,7 +97,7 @@ P (Plano): Exames a solicitar, medicações prescritas, orientações, retorno.`
   };
 
   return (
-    <div className="relative space-y-3">
+    <div className="relative space-y-3 ">
       {autofilled && (
         <div className="absolute right-4 top-4 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs flex items-center z-10">
           <Sparkles className="h-3 w-3 mr-1 text-amber-600" />

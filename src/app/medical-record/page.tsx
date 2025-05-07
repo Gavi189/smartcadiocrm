@@ -178,13 +178,13 @@ export default function MedicalRecord() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gradient-cardio mb-1">
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">
             Prontuário Eletrônico
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-gray-600 text-sm">
             Registro médico inteligente do paciente
           </p>
         </div>
@@ -194,23 +194,24 @@ export default function MedicalRecord() {
             variant="outline"
             onClick={handleAutocomplete}
             disabled={isSaving}
+            className="p-2 border border-gray-300 rounded-lg text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all flex items-center"
           >
-            <Brain className="h-4 w-4 mr-2" />
+            <Brain className="h-5 w-5 mr-2 text-blue-600" />
             Assistente IA
           </Button>
           <Button
-            className="bg-cardio-600 hover:bg-cardio-700"
+            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all flex items-center"
             onClick={handleSave}
             disabled={isSaving}
           >
             {isSaving ? (
               <>
-                <Clock className="h-4 w-4 mr-2 animate-spin" />
+                <Clock className="h-5 w-5 mr-2 animate-spin" />
                 Salvando...
               </>
             ) : (
               <>
-                <Save className="h-4 w-4 mr-2" />
+                <Save className="h-5 w-5 mr-2" />
                 Salvar Evolução
               </>
             )}
@@ -219,7 +220,7 @@ export default function MedicalRecord() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 border border-slate-100 rounded-xl shadow-sm">
           <PatientInfo
             patient={patient}
             diagnosticHypothesis={diagnosticHypothesis}
@@ -227,35 +228,47 @@ export default function MedicalRecord() {
           />
         </Card>
 
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 border border-slate-100 rounded-xl shadow-sm">
           <div className="p-0">
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <div className="flex items-center justify-between border-b px-4">
+              <div className="flex items-center justify-between border-b border-gray-200 px-6">
                 <TabsList className="h-12">
-                  <TabsTrigger value="evolution" className="h-12">
-                    <FileEdit className="h-4 w-4 mr-2" />
+                  <TabsTrigger
+                    value="evolution"
+                    className="h-12 px-4 text-gray-700 hover:bg-gray-50 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md transition-all"
+                  >
+                    <FileEdit className="h-5 w-5 mr-2" />
                     Nova Evolução
                   </TabsTrigger>
-                  <TabsTrigger value="history" className="h-12">
-                    <Clock className="h-4 w-4 mr-2" />
+                  <TabsTrigger
+                    value="history"
+                    className="h-12 px-4 text-gray-700 hover:bg-gray-50 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md transition-all"
+                  >
+                    <Clock className="h-5 w-5 mr-2" />
                     Histórico de Evoluções
                   </TabsTrigger>
-                  <TabsTrigger value="medicalHistory" className="h-12">
-                    <Stethoscope className="h-4 w-4 mr-2" />
+                  <TabsTrigger
+                    value="medicalHistory"
+                    className="h-12 px-4 text-gray-700 hover:bg-gray-50 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md transition-all"
+                  >
+                    <Stethoscope className="h-5 w-5 mr-2" />
                     História Patológica
                   </TabsTrigger>
-                  <TabsTrigger value="vitalSigns" className="h-12">
-                    <AlertCircle className="h-4 w-4 mr-2" />
+                  <TabsTrigger
+                    value="vitalSigns"
+                    className="h-12 px-4 text-gray-700 hover:bg-gray-50 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md transition-all"
+                  >
+                    <AlertCircle className="h-5 w-5 mr-2" />
                     Sinais Vitais
                   </TabsTrigger>
                 </TabsList>
                 {activeTab === "evolution" && (
-                  <div className="text-xs text-muted-foreground flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-500" />
+                  <div className="text-xs text-gray-600 flex items-center">
+                    <Check className="h-4 w-4 mr-2 text-green-500" />
                     Auto-salvando rascunho
                   </div>
                 )}
@@ -290,31 +303,31 @@ export default function MedicalRecord() {
       </div>
 
       <Dialog open={showAiAssistant} onOpenChange={setShowAiAssistant}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg p-6 rounded-xl shadow-lg">
           <DialogHeader>
-            <DialogTitle className="flex items-center">
+            <DialogTitle className="flex items-center text-xl font-semibold text-gray-900">
               <Brain className="h-5 w-5 mr-2 text-blue-600" />
               Assistente IA - Sugestões de Evolução
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-600">
               Selecione um tipo de sugestão para sua evolução médica
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-1 gap-3">
+          <div className="grid gap-6 py-4">
+            <div className="grid grid-cols-1 gap-4">
               <div
-                className="border rounded-lg p-5 hover:border-blue-400 hover:bg-blue-50 cursor-pointer transition-colors flex gap-3 items-start"
+                className="border border-gray-300 rounded-lg p-5 hover:border-blue-400 hover:bg-blue-50 cursor-pointer transition-colors flex gap-3 items-start"
                 onClick={() => handleAIContent("hda")}
               >
                 <div className="bg-blue-100 text-blue-700 rounded-full p-2.5">
                   <FileEdit className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium">
+                  <h3 className="text-gray-900 font-medium">
                     História da Doença Atual (HDA)
                   </h3>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-gray-600 text-sm mt-1">
                     Narração cronológica da doença atual, com sintomas, evolução
                     e fatores relevantes
                   </p>
@@ -322,15 +335,17 @@ export default function MedicalRecord() {
               </div>
 
               <div
-                className="border rounded-lg p-5 hover:border-green-400 hover:bg-green-50 cursor-pointer transition-colors flex gap-3 items-start"
+                className="border border-gray-300 rounded-lg p-5 hover:border-green-400 hover:bg-green-50 cursor-pointer transition-colors flex gap-3 items-start"
                 onClick={() => handleAIContent("soap")}
               >
                 <div className="bg-green-100 text-green-700 rounded-full p-2.5">
                   <Stethoscope className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Evolução Completa (SOAP)</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <h3 className="text-gray-900 font-medium">
+                    Evolução Completa (SOAP)
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-1">
                     Estrutura completa com Subjetivo, Objetivo, Avaliação e
                     Plano terapêutico
                   </p>
@@ -338,17 +353,17 @@ export default function MedicalRecord() {
               </div>
 
               <div
-                className="border rounded-lg p-5 hover:border-purple-400 hover:bg-purple-50 cursor-pointer transition-colors flex gap-3 items-start"
+                className="border border-gray-300 rounded-lg p-5 hover:border-purple-400 hover:bg-purple-50 cursor-pointer transition-colors flex gap-3 items-start"
                 onClick={() => handleAIContent("full")}
               >
                 <div className="bg-purple-100 text-purple-700 rounded-full p-2.5">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-medium">
+                  <h3 className="text-gray-900 font-medium">
                     Evolução de Consulta de Retorno
                   </h3>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-gray-600 text-sm mt-1">
                     Modelo completo para consulta de retorno, incluindo
                     anamnese, exame físico e conduta
                   </p>

@@ -44,18 +44,14 @@ export default function Header() {
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative text-blue-600"
-            >
+            <Button variant="ghost" size="icon" className="relative ">
               <Bell size={20} />
               <span className="absolute top-1 right-1 w-2 h-2 rounded-full "></span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="w-80 bg-white text-blue-600 border-blue-600"
+            className="w-80 bg-white border-slate-200"
           >
             <div className="p-2 font-medium text-sm border-b ">
               <span className=" text-base">Notificações</span>
@@ -75,8 +71,8 @@ export default function Header() {
                 </DropdownMenuItem>
               ))}
             </div>
-            <div className="p-2 text-center text-xs text-muted-foreground border-t border-blue-600">
-              <Button variant="link" className="text-xs text-blue-600">
+            <div className="p-2 text-center text-xs text-muted-foreground border-t">
+              <Button variant="link" className="text-xs text-black">
                 Ver todas
               </Button>
             </div>
@@ -85,10 +81,7 @@ export default function Header() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex items-center gap-2 text-blue-600"
-            >
+            <Button variant="ghost" className="flex items-center gap-2">
               <Avatar className="w-8 h-8">
                 <AvatarImage src="" alt="Dra." />
                 <AvatarFallback>DRA</AvatarFallback>
@@ -96,7 +89,10 @@ export default function Header() {
               <span>Dra. Paula</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white text-blue-600">
+          <DropdownMenuContent
+            align="end"
+            className="bg-white border-slate-200"
+          >
             <DropdownMenuItem asChild>
               <Link href="/profile">Meu Perfil</Link>
             </DropdownMenuItem>

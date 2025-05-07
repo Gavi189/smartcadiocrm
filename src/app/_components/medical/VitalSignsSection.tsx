@@ -22,12 +22,14 @@ export default function VitalSignsSection({
   }, [vitalSigns.weight, vitalSigns.height, setVitalSigns]);
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-medium">Sinais Vitais</h3>
+    <div className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm space-y-6">
+      <h3 className="text-xl font-semibold text-gray-900">Sinais Vitais</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
-          <label className="text-sm font-medium">Peso (kg)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Peso (kg)
+          </label>
           <Input
             type="number"
             placeholder="Ex: 70.5"
@@ -38,11 +40,14 @@ export default function VitalSignsSection({
                 weight: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Altura (cm)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Altura (cm)
+          </label>
           <Input
             type="number"
             placeholder="Ex: 175"
@@ -53,21 +58,24 @@ export default function VitalSignsSection({
                 height: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">IMC (kg/m²)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            IMC (kg/m²)
+          </label>
           <Input
             type="number"
             value={vitalSigns.bmi || ""}
             disabled
-            className="bg-gray-100"
+            className="w-full p-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Circunferência Abdominal (cm)
           </label>
           <Input
@@ -80,11 +88,12 @@ export default function VitalSignsSection({
                 waistCircumference: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Frequência Cardíaca (bpm)
           </label>
           <Input
@@ -97,11 +106,12 @@ export default function VitalSignsSection({
                 heartRate: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Frequência Respiratória (irpm)
           </label>
           <Input
@@ -114,11 +124,12 @@ export default function VitalSignsSection({
                 respiratoryRate: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Temperatura Corporal (°C)
           </label>
           <Input
@@ -131,11 +142,14 @@ export default function VitalSignsSection({
                 temperature: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Pressão Arterial (mmHg)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Pressão Arterial (mmHg)
+          </label>
           <Input
             type="text"
             placeholder="Ex: 120/80"
@@ -146,11 +160,14 @@ export default function VitalSignsSection({
                 bloodPressure: e.target.value,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Saturação de O₂ (%)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Saturação de O₂ (%)
+          </label>
           <Input
             type="number"
             placeholder="Ex: 98"
@@ -161,12 +178,13 @@ export default function VitalSignsSection({
                 oxygenSaturation: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">
-            Glicemia capilar (mg/dL)
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Glicemia Capilar (mg/dL)
           </label>
           <Input
             type="number"
@@ -178,11 +196,14 @@ export default function VitalSignsSection({
                 bloodGlucose: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium">Escala de dor (0-10)</label>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Escala de Dor (0-10)
+          </label>
           <Input
             type="number"
             placeholder="Ex: 3"
@@ -195,6 +216,7 @@ export default function VitalSignsSection({
                 painScore: parseFloat(e.target.value) || undefined,
               }))
             }
+            className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
           />
         </div>
       </div>

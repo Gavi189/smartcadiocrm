@@ -30,20 +30,20 @@ export default function MedicalHistorySection({
   setHistory,
 }: MedicalHistorySectionProps) {
   return (
-    <div className="space-y-6">
-      <h3 className="text-lg font-medium">
+    <div className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm space-y-6">
+      <h3 className="text-xl font-semibold text-gray-900">
         História Patológica Pregressa (HPP)
       </h3>
 
       <Accordion type="multiple" className="w-full">
         <AccordionItem value="comorbidities">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Heart className="h-4 w-4 mr-2 text-cardio-600" />
-              Comorbidades
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Heart className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">Comorbidades</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <Textarea
               placeholder="Ex: Hipertensão, Diabetes tipo 2, Dislipidemia"
               value={history.comorbidities?.join(", ") || ""}
@@ -53,19 +53,21 @@ export default function MedicalHistorySection({
                   comorbidities: e.target.value.split(", "),
                 }))
               }
-              className="min-h-[80px]"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[100px] text-gray-700 placeholder-gray-400"
             />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="surgeries">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Pill className="h-4 w-4 mr-2 text-cardio-600" />
-              Cirurgias Realizadas
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Pill className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                Cirurgias Realizadas
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <Textarea
               placeholder="Ex: Revascularização miocárdica (2015)"
               value={history.surgeries?.join(", ") || ""}
@@ -75,19 +77,19 @@ export default function MedicalHistorySection({
                   surgeries: e.target.value.split(", "),
                 }))
               }
-              className="min-h-[80px]"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[100px] text-gray-700 placeholder-gray-400"
             />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="allergies">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Activity className="h-4 w-4 mr-2 text-cardio-600" />
-              Alergias
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Activity className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">Alergias</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <Textarea
               placeholder="Ex: Alergia a AAS (ácido acetilsalicílico)"
               value={history.allergies || ""}
@@ -97,21 +99,24 @@ export default function MedicalHistorySection({
                   allergies: e.target.value,
                 }))
               }
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[100px] text-gray-700 placeholder-gray-400"
             />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="habits">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Activity className="h-4 w-4 mr-2 text-cardio-600" />
-              Hábitos de Vida
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Activity className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">Hábitos de Vida</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Atividade física:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Atividade física:
+                </label>
                 <Input
                   placeholder="Ex: Sim (caminhada 3x/semana)"
                   value={history.physicalActivity || ""}
@@ -121,10 +126,13 @@ export default function MedicalHistorySection({
                       physicalActivity: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Sono:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Sono:
+                </label>
                 <Input
                   placeholder="Ex: Regular, 7h por noite"
                   value={history.sleep || ""}
@@ -134,10 +142,13 @@ export default function MedicalHistorySection({
                       sleep: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Alimentação:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Alimentação:
+                </label>
                 <Input
                   placeholder="Ex: Pobre em fibras, rica em sódio"
                   value={history.diet || ""}
@@ -147,6 +158,7 @@ export default function MedicalHistorySection({
                       diet: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -154,13 +166,15 @@ export default function MedicalHistorySection({
         </AccordionItem>
 
         <AccordionItem value="sports">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Activity className="h-4 w-4 mr-2 text-cardio-600" />
-              Prática de Esportes
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Activity className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                Prática de Esportes
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <Input
               placeholder="Ex: Futebol recreativo 1x por semana"
               value={history.sports || ""}
@@ -170,21 +184,26 @@ export default function MedicalHistorySection({
                   sports: e.target.value,
                 }))
               }
+              className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
             />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="substances">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Cigarette className="h-4 w-4 mr-2 text-cardio-600" />
-              Uso de Substâncias
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Cigarette className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                Uso de Substâncias
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Tabaco:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Tabaco:
+                </label>
                 <Input
                   placeholder="Ex: 10 cigarros/dia há 15 anos (ativo)"
                   value={history.tobacco || ""}
@@ -194,10 +213,13 @@ export default function MedicalHistorySection({
                       tobacco: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Álcool:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Álcool:
+                </label>
                 <Input
                   placeholder="Ex: Socialmente"
                   value={history.alcohol || ""}
@@ -207,10 +229,13 @@ export default function MedicalHistorySection({
                       alcohol: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Drogas ilícitas:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Drogas ilícitas:
+                </label>
                 <Input
                   placeholder="Ex: Nega uso"
                   value={history.illicitDrugs || ""}
@@ -220,6 +245,7 @@ export default function MedicalHistorySection({
                       illicitDrugs: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -227,13 +253,15 @@ export default function MedicalHistorySection({
         </AccordionItem>
 
         <AccordionItem value="family">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Users className="h-4 w-4 mr-2 text-cardio-600" />
-              Histórico Familiar
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Users className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                Histórico Familiar
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <Textarea
               placeholder="Ex: Pai com infarto agudo do miocárdio aos 60 anos"
               value={history.familyHistory?.join("\n") || ""}
@@ -243,22 +271,26 @@ export default function MedicalHistorySection({
                   familyHistory: e.target.value.split("\n"),
                 }))
               }
-              className="min-h-[100px]"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[120px] text-gray-700 placeholder-gray-400"
             />
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="vaccines">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Syringe className="h-4 w-4 mr-2 text-cardio-600" />
-              História Vacinal
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Syringe className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                História Vacinal
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">COVID-19:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  COVID-19:
+                </label>
                 <Input
                   placeholder="Ex: 3 doses"
                   value={history.vaccineHistory?.covid || ""}
@@ -271,10 +303,13 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Influenza:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Influenza:
+                </label>
                 <Input
                   placeholder="Ex: Atualizada"
                   value={history.vaccineHistory?.influenza || ""}
@@ -287,10 +322,13 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Pneumocócica:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Pneumocócica:
+                </label>
                 <Input
                   placeholder="Ex: Pendente"
                   value={history.vaccineHistory?.pneumococcal || ""}
@@ -303,6 +341,7 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -310,16 +349,20 @@ export default function MedicalHistorySection({
         </AccordionItem>
 
         <AccordionItem value="gynecological">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <UserRound className="h-4 w-4 mr-2 text-cardio-600" />
-              História Ginecológica
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <UserRound className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                História Ginecológica
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Gestações:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Gestações:
+                </label>
                 <Input
                   type="number"
                   placeholder="Ex: 2"
@@ -333,10 +376,13 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Abortos:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Abortos:
+                </label>
                 <Input
                   type="number"
                   placeholder="Ex: 0"
@@ -350,10 +396,13 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Menarca (idade):</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Menarca (idade):
+                </label>
                 <Input
                   type="number"
                   placeholder="Ex: 12"
@@ -367,10 +416,11 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
                   Menopausa (idade):
                 </label>
                 <Input
@@ -386,10 +436,13 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Ciclo menstrual:</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Ciclo menstrual:
+                </label>
                 <Input
                   placeholder="Ex: Regular (28/5 dias)"
                   value={history.gynecologicalHistory?.menstrualCycle || ""}
@@ -402,6 +455,7 @@ export default function MedicalHistorySection({
                       },
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
             </div>
@@ -409,16 +463,18 @@ export default function MedicalHistorySection({
         </AccordionItem>
 
         <AccordionItem value="other">
-          <AccordionTrigger className="text-left">
-            <div className="flex items-center">
-              <Gift className="h-4 w-4 mr-2 text-cardio-600" />
-              Outras Informações
+          <AccordionTrigger className="text-left hover:bg-gray-50 active:bg-gray-100 transition-colors duration-200 rounded-md">
+            <div className="flex items-center gap-2 py-2">
+              <Gift className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-700 font-medium">
+                Outras Informações
+              </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="pt-4">
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
                   Histórico de internações hospitalares:
                 </label>
                 <Textarea
@@ -430,11 +486,11 @@ export default function MedicalHistorySection({
                       hospitalizations: e.target.value.split("\n"),
                     }))
                   }
-                  className="min-h-[80px]"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[120px] text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
                   Doenças infectocontagiosas prévias:
                 </label>
                 <Textarea
@@ -446,11 +502,11 @@ export default function MedicalHistorySection({
                       infectiousDiseases: e.target.value.split("\n"),
                     }))
                   }
-                  className="min-h-[80px]"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all min-h-[120px] text-gray-700 placeholder-gray-400"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
                   Exposição ocupacional ou ambiental:
                 </label>
                 <Input
@@ -462,6 +518,7 @@ export default function MedicalHistorySection({
                       occupationalExposure: e.target.value,
                     }))
                   }
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-gray-700 placeholder-gray-400"
                 />
               </div>
             </div>
