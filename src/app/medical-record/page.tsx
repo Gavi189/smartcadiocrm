@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
   Check,
   Clock,
@@ -38,13 +39,59 @@ import {
   DialogTitle,
 } from "../_components/ui/dialog";
 
+// Mock response when API is not available
+const MOCK_AI_RESPONSES = {
+  diagnostic: `Considerando os dados da paciente Maria Silva, 64 anos, com hipótese diagnóstica de Angina instável (I20.0), e histórico de hipertensão, diabetes tipo 2 e revascularização miocárdica prévia:
+
+Diagnósticos Diferenciais:
+1. Infarto agudo do miocárdio sem supradesnivelamento do segmento ST
+2. Síndrome de Takotsubo (cardiomiopatia induzida por estresse)
+3. Dissecção aórtica
+4. Embolia pulmonar
+5. Pericardite aguda
+
+Perguntas adicionais importantes:
+- Caracterização da dor: início, duração, fatores de alívio ou piora
+- Presença de sintomas associados: dispneia, náuseas, sudorese
+- Eventos recentes de estresse emocional ou físico
+- Adesão ao tratamento de comorbidades
+- Resultados de exames cardíacos anteriores`,
+
+  treatment: `Plano de Conduta para Maria Silva (64 anos) - Hipótese: Angina instável
+
+EXAMES RECOMENDADOS:
+- ECG de 12 derivações imediato
+- Enzimas cardíacas seriadas (troponina, CK-MB)
+- Ecocardiograma transtorácico
+- Teste ergométrico ou cintilografia miocárdica após estabilização
+- Perfil lipídico completo e HbA1c
+
+MEDICAÇÕES:
+- AAS 100mg/dia (considerar clopidogrel devido à alergia a AAS)
+- Beta-bloqueador (metoprolol 50mg 2x/dia)
+- Estatina de alta potência (rosuvastatina 20mg/dia)
+- Ajustar medicações para diabetes e hipertensão conforme controle atual
+
+ORIENTAÇÕES:
+- Repouso nas próximas 24-48h
+- Dieta hipossódica e pobre em carboidratos refinados
+- Controle rigoroso da glicemia
+- Retorno em 7 dias com resultados dos exames
+- Procurar emergência se dor persistir ou piorar`,
+};
+
 export default function MedicalRecord() {
   const [activeTab, setActiveTab] = useState("evolution");
   const [evolContent, setEvolContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [autofilledContent, setAutofilledContent] = useState(false);
   const [showAiAssistant, setShowAiAssistant] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResponse, setAiResponse] = useState("");
+  const [isBackendAvailable, setIsBackendAvailable] = useState(true);
   const { toast } = useToast();
+  // Fix: Properly type the ref as HTMLButtonElement
+  const dialogTriggerRef = useRef<HTMLButtonElement>(null);
 
   const [medicalHistory, setMedicalHistory] = useState<MedicalHistory>({
     comorbidities: ["Hipertensão", "Diabetes tipo 2"],
@@ -81,86 +128,6 @@ export default function MedicalRecord() {
       icdCode: "I20.0",
     });
 
-  const handleSave = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
-      toast({
-        title: "Evolução salva",
-        description: "A evolução do paciente foi salva com sucesso.",
-      });
-    }, 1000);
-  };
-
-  const handleAutocomplete = () => {
-    setShowAiAssistant(true);
-  };
-
-  const handleAIContent = (type: string) => {
-    setShowAiAssistant(false);
-
-    setTimeout(() => {
-      let suggestedText = "";
-
-      if (type === "hda") {
-        suggestedText =
-          "HISTÓRIA DA DOENÇA ATUAL:\n" +
-          "Paciente Maria Silva, 64 anos, com histórico de hipertensão arterial e diabetes mellitus tipo 2, refere quadro de dor precordial em aperto, de início há 3 dias, irradiada para membro superior esquerdo, com intensidade 7/10, desencadeada aos médios esforços e com melhora parcial ao repouso. Associada à dispneia progressiva (atualmente classe funcional II), ortopneia (usa 2 travesseiros) e edema em membros inferiores vespertino (+/4+).\n\n" +
-          "Relata episódios semelhantes há cerca de 1 mês, porém com menor intensidade. Admite ter abandonado o uso da Losartana na última semana por acreditar que sua pressão estava controlada. Sem febre ou outros sintomas associados. Nega trauma torácico recente. Menciona período de estresse aumentado no último mês devido a problemas familiares.";
-      } else if (type === "soap") {
-        suggestedText =
-          "S (SUBJETIVO):\n" +
-          "Paciente Maria Silva, 64 anos, hipertensa e diabética, refere dor precordial em aperto, irradiada para MSE, intensidade 7/10, aos médios esforços, iniciada há 3 dias. Associa dispneia progressiva (CF II), ortopneia (2 travesseiros) e edema de MMII vespertino (+/4+). Episódios semelhantes no último mês, de menor intensidade. Abandonou uso de Losartana há 1 semana. Nega febre ou trauma torácico.\n\n" +
-          "O (OBJETIVO):\n" +
-          "PA: 158/94 mmHg | FC: 88 bpm | FR: 20 irpm | Sat O2: 96% | Peso: 70kg | Altura: 1,65m | IMC: 25,7 kg/m²\n" +
-          "Consciente, orientada, BEG, corada, hidratada, anictérica, acianótica, sem edema periférico significativo.\n" +
-          "ACV: RCR em 2T, bulhas normofonéticas, sem sopros audíveis. Pulsos periféricos palpáveis e simétricos.\n" +
-          "AR: MV presente bilateralmente, sem ruídos adventícios.\n" +
-          "Abdome: Plano, flácido, indolor à palpação, sem massas ou visceromegalias palpáveis.\n" +
-          "MMII: Edema discreto em região maleolar bilateral (+/4+), sem sinais de TVP.\n\n" +
-          "A (AVALIAÇÃO):\n" +
-          "1. Angina instável - alta probabilidade\n" +
-          "2. Hipertensão arterial sistêmica descompensada\n" +
-          "3. Diabetes mellitus tipo 2\n" +
-          "4. Insuficiência cardíaca - CF II (NYHA)\n\n" +
-          "P (PLANO):\n" +
-          "1. Solicitar ECG, troponina, CK-MB, lipidograma, função renal, BNP\n" +
-          "2. Reiniciar Losartana 50mg 2x/dia\n" +
-          "3. Iniciar AAS 100mg 1x/dia\n" +
-          "4. Iniciar Atorvastatina 40mg 1x/dia\n" +
-          "5. Considerar teste ergométrico após estabilização do quadro\n" +
-          "6. Orientar restrição de sódio e controle glicêmico rigoroso\n" +
-          "7. Retorno em 7 dias com exames ou antes se piora dos sintomas";
-      } else {
-        suggestedText =
-          "Paciente Maria Silva, 64 anos, comparece para consulta de retorno. \n\n" +
-          "ANAMNESE: Refere melhora da dispneia aos esforços após ajuste da medicação. Nega dor torácica. Mantém episódios de palpitações esporádicas, principalmente após situações de ansiedade. PA bem controlada em casa (média 130/85mmHg). Sono regular, sem ortopneia.\n\n" +
-          "MEDICAÇÕES EM USO: Losartana 50mg 2x/dia, Atenolol 25mg 1x/dia, AAS 100mg 1x/dia.\n\n" +
-          "EXAME FÍSICO: PA: 135/85 mmHg | FC: 72bpm | SpO2: 97% | Peso: 68kg\n" +
-          "Aparelho Cardiovascular: Bulhas rítmicas, normofonéticas, sem sopros.\n" +
-          "Aparelho Respiratório: Murmúrio vesicular presente bilateralmente, sem ruídos adventícios.\n" +
-          "MMII: Sem edemas, pulsos pediosos presentes e simétricos.\n\n" +
-          "EXAMES: ECG: ritmo sinusal, sem alterações isquêmicas agudas.\n" +
-          "Ecocardiograma (10/02/2025): FE 58%, hipertrofia concêntrica de VE leve, sem alterações significativas da contratilidade segmentar.\n\n" +
-          "CONDUTA:\n" +
-          "1. Manter medicações atuais\n" +
-          "2. Solicitar perfil lipídico e função renal\n" +
-          "3. Orientações sobre dieta hipossódica e atividade física regular\n" +
-          "4. Retorno em 3 meses\n\n" +
-          "CID-10: I20.9 (Angina pectoris, não especificada)";
-      }
-
-      setEvolContent(suggestedText);
-      setAutofilledContent(true);
-
-      toast({
-        title: "IA aplicada",
-        description:
-          "Conteúdo sugerido pela IA com base no histórico do paciente.",
-      });
-    }, 1000);
-  };
-
   const patient = {
     id: 1,
     name: "Maria Silva",
@@ -177,8 +144,229 @@ export default function MedicalRecord() {
     lastVisit: "24/03/2025",
   };
 
+  // Check if backend server is available
+  useEffect(() => {
+    const checkBackendStatus = async () => {
+      try {
+        // Simple HEAD request to see if server responds
+        await axios.head("http://localhost:5000", { timeout: 2000 });
+        setIsBackendAvailable(true);
+      } catch (error) {
+        console.log(
+          error +
+            "Backend server appears to be offline, using mock data instead"
+        );
+        setIsBackendAvailable(false);
+      }
+    };
+
+    checkBackendStatus();
+  }, []);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setIsSaving(false);
+      toast({
+        title: "Evolução salva",
+        description: "A evolução do paciente foi salva com sucesso.",
+      });
+    }, 1000);
+  };
+
+  const handleAssistenteIA = async () => {
+    setAiLoading(true);
+    setShowAiAssistant(true);
+
+    try {
+      // If backend is not available, use mock data
+      if (!isBackendAvailable) {
+        setTimeout(() => {
+          setAiResponse(MOCK_AI_RESPONSES.diagnostic);
+          setAutofilledContent(true);
+          setAiLoading(false);
+        }, 1500); // Simulate API delay
+        return;
+      }
+
+      const prompt = `Com base nos dados do paciente: ${JSON.stringify(
+        patient
+      )}, história médica: ${JSON.stringify(
+        medicalHistory
+      )}, sinais vitais: ${JSON.stringify(
+        vitalSigns
+      )}, e hipótese diagnóstica atual: ${
+        diagnosticHypothesis.description
+      }, sugira um diagnóstico diferencial e perguntas adicionais para confirmar. Responda em formato de texto simples.`;
+
+      const response = await axios.post(
+        "http://localhost:5000/api/assistente-ia",
+        { prompt },
+        {
+          timeout: 10000, // Set timeout to 10 seconds
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data && response.data.response) {
+        setAiResponse(response.data.response);
+        setAutofilledContent(true);
+      } else {
+        throw new Error("Resposta inválida da API");
+      }
+    } catch (error) {
+      console.error("Erro na IA:", error);
+
+      // Better error handling with specific messages
+      let errorMessage = "Falha ao carregar sugestão da IA";
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
+          errorMessage =
+            "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
+          // Fallback to mock data
+          setAiResponse(MOCK_AI_RESPONSES.diagnostic);
+          setAutofilledContent(true);
+        } else if (error.response) {
+          // Server responded with an error status
+          errorMessage = `Erro ${error.response.status}: ${
+            error.response.data?.error || "Erro desconhecido do servidor"
+          }`;
+        } else if (error.request) {
+          // Request was made but no response received
+          errorMessage =
+            "Servidor não respondeu ao pedido. Verifique a conexão.";
+        }
+      } else if (error instanceof Error) {
+        errorMessage += `: ${error.message}`;
+      }
+
+      toast({
+        title: "Erro",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleSugestaoIA = async () => {
+    setAiLoading(true);
+
+    try {
+      // If backend is not available, use mock data
+      if (!isBackendAvailable) {
+        setTimeout(() => {
+          const mockResponse = MOCK_AI_RESPONSES.treatment;
+          setAiResponse(mockResponse);
+          setEvolContent((prev) => prev + "\n\n" + mockResponse);
+          setAutofilledContent(true);
+          setAiLoading(false);
+        }, 1500); // Simulate API delay
+        return;
+      }
+
+      const prompt = `Com base nos dados do paciente: ${JSON.stringify(
+        patient
+      )}, história médica: ${JSON.stringify(
+        medicalHistory
+      )}, sinais vitais: ${JSON.stringify(
+        vitalSigns
+      )}, e hipótese diagnóstica: ${
+        diagnosticHypothesis.description
+      }, sugira um plano de conduta incluindo exames, medicações e orientações. Responda em formato de texto simples.`;
+
+      const response = await axios.post(
+        "http://localhost:5000/api/sugestao-ia",
+        { prompt },
+        {
+          timeout: 10000, // Set timeout to 10 seconds
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data && response.data.response) {
+        setAiResponse(response.data.response);
+        setEvolContent((prev) => prev + "\n\n" + response.data.response);
+        setAutofilledContent(true);
+      } else {
+        throw new Error("Resposta inválida da API");
+      }
+    } catch (error) {
+      console.error("Erro na IA:", error);
+
+      // Better error handling with specific messages
+      let errorMessage = "Falha ao carregar sugestão de conduta";
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
+          errorMessage =
+            "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
+          // Fallback to mock data
+          const mockResponse = MOCK_AI_RESPONSES.treatment;
+          setAiResponse(mockResponse);
+          setEvolContent((prev) => prev + "\n\n" + mockResponse);
+          setAutofilledContent(true);
+        } else if (error.response) {
+          // Server responded with an error status
+          errorMessage = `Erro ${error.response.status}: ${
+            error.response.data?.error || "Erro desconhecido do servidor"
+          }`;
+        } else if (error.request) {
+          // Request was made but no response received
+          errorMessage =
+            "Servidor não respondeu ao pedido. Verifique a conexão.";
+        }
+      } else if (error instanceof Error) {
+        errorMessage += `: ${error.message}`;
+      }
+
+      toast({
+        title: "Erro",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!showAiAssistant && dialogTriggerRef.current) {
+      dialogTriggerRef.current.focus();
+    }
+  }, [showAiAssistant]);
+
   return (
     <div className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm space-y-6">
+      <style jsx>{`
+        .spinner {
+          border: 4px solid rgba(0, 0, 0, 0.1);
+          border-left: 4px solid #3b82f6;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          animation: spin 1s linear infinite;
+          margin-right: 8px;
+        }
+        .spinner-large {
+          width: 50px;
+          height: 50px;
+          border-width: 6px;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
@@ -188,16 +376,38 @@ export default function MedicalRecord() {
             Registro médico inteligente do paciente
           </p>
         </div>
-
         <div className="flex gap-2">
+          {!isBackendAvailable && (
+            <div className="bg-yellow-50 border border-yellow-300 rounded-md p-2 text-xs text-yellow-800 flex items-center mr-2">
+              <AlertCircle className="h-4 w-4 mr-1" />
+              Usando dados simulados (servidor offline)
+            </div>
+          )}
           <Button
             variant="outline"
-            onClick={handleAutocomplete}
-            disabled={isSaving}
+            onClick={handleAssistenteIA}
+            disabled={isSaving || aiLoading}
             className="p-2 border border-gray-300 rounded-lg text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all flex items-center"
+            ref={dialogTriggerRef}
           >
-            <Brain className="h-5 w-5 mr-2 text-blue-600" />
+            {aiLoading ? (
+              <div className="spinner" />
+            ) : (
+              <Brain className="h-5 w-5 mr-2 text-blue-600" />
+            )}
             Assistente IA
+          </Button>
+          <Button
+            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all flex items-center"
+            onClick={handleSugestaoIA}
+            disabled={isSaving || aiLoading}
+          >
+            {aiLoading ? (
+              <div className="spinner" />
+            ) : (
+              <Sparkles className="h-5 w-5 mr-2" />
+            )}
+            Sugestão de IA
           </Button>
           <Button
             className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all flex items-center"
@@ -280,6 +490,11 @@ export default function MedicalRecord() {
                     onContentChange={setEvolContent}
                     autofilled={autofilledContent}
                   />
+                  {aiResponse && (
+                    <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                      <p className="text-gray-700">{aiResponse}</p>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="history" className="mt-0">
                   <EvolutionHistory />
@@ -307,69 +522,23 @@ export default function MedicalRecord() {
           <DialogHeader>
             <DialogTitle className="flex items-center text-xl font-semibold text-gray-900">
               <Brain className="h-5 w-5 mr-2 text-blue-600" />
-              Assistente IA - Sugestões de Evolução
+              Assistente IA - Sugestões de Diagnóstico
             </DialogTitle>
             <DialogDescription className="text-gray-600">
-              Selecione um tipo de sugestão para sua evolução médica
+              Resultado da IA baseado nos dados do paciente
+              {!isBackendAvailable && " (usando dados simulados)"}
             </DialogDescription>
           </DialogHeader>
-
           <div className="grid gap-6 py-4">
-            <div className="grid grid-cols-1 gap-4">
-              <div
-                className="border border-gray-300 rounded-lg p-5 hover:border-blue-400 hover:bg-blue-50 cursor-pointer transition-colors flex gap-3 items-start"
-                onClick={() => handleAIContent("hda")}
-              >
-                <div className="bg-blue-100 text-blue-700 rounded-full p-2.5">
-                  <FileEdit className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-gray-900 font-medium">
-                    História da Doença Atual (HDA)
-                  </h3>
-                  <p className="text-gray-600 text-sm mt-1">
-                    Narração cronológica da doença atual, com sintomas, evolução
-                    e fatores relevantes
-                  </p>
-                </div>
+            {aiLoading ? (
+              <div className="flex justify-center">
+                <div className="spinner spinner-large" />
               </div>
-
-              <div
-                className="border border-gray-300 rounded-lg p-5 hover:border-green-400 hover:bg-green-50 cursor-pointer transition-colors flex gap-3 items-start"
-                onClick={() => handleAIContent("soap")}
-              >
-                <div className="bg-green-100 text-green-700 rounded-full p-2.5">
-                  <Stethoscope className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-gray-900 font-medium">
-                    Evolução Completa (SOAP)
-                  </h3>
-                  <p className="text-gray-600 text-sm mt-1">
-                    Estrutura completa com Subjetivo, Objetivo, Avaliação e
-                    Plano terapêutico
-                  </p>
-                </div>
+            ) : aiResponse ? (
+              <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <p className="text-gray-700">{aiResponse}</p>
               </div>
-
-              <div
-                className="border border-gray-300 rounded-lg p-5 hover:border-purple-400 hover:bg-purple-50 cursor-pointer transition-colors flex gap-3 items-start"
-                onClick={() => handleAIContent("full")}
-              >
-                <div className="bg-purple-100 text-purple-700 rounded-full p-2.5">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-gray-900 font-medium">
-                    Evolução de Consulta de Retorno
-                  </h3>
-                  <p className="text-gray-600 text-sm mt-1">
-                    Modelo completo para consulta de retorno, incluindo
-                    anamnese, exame físico e conduta
-                  </p>
-                </div>
-              </div>
-            </div>
+            ) : null}
           </div>
         </DialogContent>
       </Dialog>

@@ -9,7 +9,7 @@ export default function PatientsList() {
   return (
     <>
       <PatientListHeader />
-      <Card className="card-hover section-card bg-white border-slate-100">
+      <Card className="card-hover section-card">
         <CardContent className="pt-6">
           <div className="space-y-4">
             {patientsData.map((patient) => (
