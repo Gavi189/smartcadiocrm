@@ -147,7 +147,7 @@ export default function MedicalRecord() {
   useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        const response = await axios.get("https://backend-ebon.onrender.com", {
+        const response = await axios.get("https://backend-ebon.onrender.com/", {
           timeout: 2000,
         });
         if (response.status === 200) {
@@ -200,16 +200,17 @@ export default function MedicalRecord() {
         return;
       }
 
-      const patientSummary = `${patient.name}, ${patient.age} anos, diagnóstico: ${diagnosticHypothesis.description}`;
+      const patientSummary = `${patient.name}, ${patient.age} anos, ${patient.gender}, diagnóstico: ${diagnosticHypothesis.description}`;
       const historySummary = `Histórico: ${
         medicalHistory.comorbidities?.join(", ") || "Nenhum"
       }, ${medicalHistory.surgeries?.join(", ") || "Nenhum"}`;
       const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
-      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas.`;
-      if (prompt.length > 1000) {
+      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas. Responda em até 1500 caracteres, em formato de texto simples, sem divagações.`;
+      console.log("Tamanho do prompt:", prompt.length);
+      if (prompt.length > 2000) {
         toast({
           title: "Erro",
-          description: "O prompt excede o limite de 1000 caracteres.",
+          description: "O prompt excede o limite de 2000 caracteres.",
           variant: "destructive",
         });
         setAiLoading(false);
@@ -235,7 +236,13 @@ export default function MedicalRecord() {
       console.error("Erro na IA:", error);
       let errorMessage = "Falha ao carregar sugestão da IA";
       if (axios.isAxiosError(error)) {
-        if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
+        if (error.code === "ECONNABORTED") {
+          errorMessage =
+            "Timeout excedido (60s). Verifique o servidor ou aumente o timeout.";
+        } else if (
+          error.code === "ECONNREFUSED" ||
+          error.code === "ERR_NETWORK"
+        ) {
           errorMessage =
             "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
           setAiResponse(MOCK_AI_RESPONSES.diagnostic);
@@ -278,16 +285,17 @@ export default function MedicalRecord() {
         return;
       }
 
-      const patientSummary = `${patient.name}, ${patient.age} anos, diagnóstico: ${diagnosticHypothesis.description}`;
+      const patientSummary = `${patient.name}, ${patient.age} anos, ${patient.gender}, diagnóstico: ${diagnosticHypothesis.description}`;
       const historySummary = `Histórico: ${
         medicalHistory.comorbidities?.join(", ") || "Nenhum"
       }, ${medicalHistory.surgeries?.join(", ") || "Nenhum"}`;
       const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
-      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira plano de conduta com exames, medicações e orientações.`;
-      if (prompt.length > 1000) {
+      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira plano de conduta com exames, medicações e orientações. Responda em até 500 caracteres, em formato de texto simples, sem divagações.`;
+      console.log("Tamanho do prompt:", prompt.length);
+      if (prompt.length > 2000) {
         toast({
           title: "Erro",
-          description: "O prompt excede o limite de 1000 caracteres.",
+          description: "O prompt excede o limite de 2000 caracteres.",
           variant: "destructive",
         });
         setAiLoading(false);
@@ -298,7 +306,7 @@ export default function MedicalRecord() {
         "https://backend-ebon.onrender.com/api/sugestao-ia",
         { messages: [{ role: "user", content: prompt }] },
         {
-          timeout: 20000,
+          timeout: 60000,
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -314,7 +322,13 @@ export default function MedicalRecord() {
       console.error("Erro na IA:", error);
       let errorMessage = "Falha ao carregar sugestão de conduta";
       if (axios.isAxiosError(error)) {
-        if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
+        if (error.code === "ECONNABORTED") {
+          errorMessage =
+            "Timeout excedido (60s). Verifique o servidor ou aumente o timeout.";
+        } else if (
+          error.code === "ECONNREFUSED" ||
+          error.code === "ERR_NETWORK"
+        ) {
           errorMessage =
             "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
           const mockResponse = MOCK_AI_RESPONSES.treatment;
