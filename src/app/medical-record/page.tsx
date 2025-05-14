@@ -147,7 +147,7 @@ export default function MedicalRecord() {
   useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        const response = await axios.get("http://localhost:5000", {
+        const response = await axios.get("https://backend-ebon.onrender.com", {
           timeout: 2000,
         });
         if (response.status === 200) {
@@ -217,7 +217,7 @@ export default function MedicalRecord() {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/assistente-ia",
+        "https://backend-ebon.onrender.com/api/assistente-ia",
         { messages: [{ role: "user", content: prompt }] },
         {
           timeout: 60000,
@@ -295,7 +295,7 @@ export default function MedicalRecord() {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/sugestao-ia",
+        "https://backend-ebon.onrender.com/api/sugestao-ia",
         { messages: [{ role: "user", content: prompt }] },
         {
           timeout: 20000,
