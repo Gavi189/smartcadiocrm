@@ -90,8 +90,8 @@ export default function MedicalRecord() {
   const [aiResponse, setAiResponse] = useState("");
   const [isBackendAvailable, setIsBackendAvailable] = useState(true);
   const { toast } = useToast();
-  // Fix: Properly type the ref as HTMLButtonElement
   const dialogTriggerRef = useRef<HTMLButtonElement>(null);
+  const eventSourceRef = useRef<EventSource | null>(null); // Para streaming
 
   const [medicalHistory, setMedicalHistory] = useState<MedicalHistory>({
     comorbidities: ["Hipertensão", "Diabetes tipo 2"],
@@ -144,23 +144,34 @@ export default function MedicalRecord() {
     lastVisit: "24/03/2025",
   };
 
-  // Check if backend server is available
   useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        // Simple HEAD request to see if server responds
-        await axios.head("http://localhost:5000", { timeout: 2000 });
-        setIsBackendAvailable(true);
+        const response = await axios.get("http://localhost:5000", {
+          timeout: 2000,
+        });
+        if (response.status === 200) {
+          setIsBackendAvailable(true);
+        } else {
+          throw new Error("Unexpected status code");
+        }
       } catch (error) {
         console.log(
-          error +
-            "Backend server appears to be offline, using mock data instead"
+          "Backend server appears to be offline, using mock data instead",
+          error
         );
         setIsBackendAvailable(false);
       }
     };
 
     checkBackendStatus();
+
+    // Cleanup event source on unmount
+    return () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+      }
+    };
   }, []);
 
   const handleSave = () => {
@@ -177,36 +188,40 @@ export default function MedicalRecord() {
   const handleAssistenteIA = async () => {
     setAiLoading(true);
     setShowAiAssistant(true);
+    setAiResponse("");
 
     try {
-      // If backend is not available, use mock data
       if (!isBackendAvailable) {
         setTimeout(() => {
           setAiResponse(MOCK_AI_RESPONSES.diagnostic);
           setAutofilledContent(true);
           setAiLoading(false);
-        }, 1500); // Simulate API delay
+        }, 1500);
         return;
       }
 
-      const prompt = `Com base nos dados do paciente: ${JSON.stringify(
-        patient
-      )}, história médica: ${JSON.stringify(
-        medicalHistory
-      )}, sinais vitais: ${JSON.stringify(
-        vitalSigns
-      )}, e hipótese diagnóstica atual: ${
-        diagnosticHypothesis.description
-      }, sugira um diagnóstico diferencial e perguntas adicionais para confirmar. Responda em formato de texto simples.`;
+      const patientSummary = `${patient.name}, ${patient.age} anos, diagnóstico: ${diagnosticHypothesis.description}`;
+      const historySummary = `Histórico: ${
+        medicalHistory.comorbidities?.join(", ") || "Nenhum"
+      }, ${medicalHistory.surgeries?.join(", ") || "Nenhum"}`;
+      const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
+      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas.`;
+      if (prompt.length > 1000) {
+        toast({
+          title: "Erro",
+          description: "O prompt excede o limite de 1000 caracteres.",
+          variant: "destructive",
+        });
+        setAiLoading(false);
+        return;
+      }
 
       const response = await axios.post(
         "http://localhost:5000/api/assistente-ia",
-        { prompt },
+        { messages: [{ role: "user", content: prompt }] },
         {
-          timeout: 10000, // Set timeout to 10 seconds
-          headers: {
-            "Content-Type": "application/json",
-          },
+          timeout: 60000,
+          headers: { "Content-Type": "application/json" },
         }
       );
 
@@ -218,30 +233,25 @@ export default function MedicalRecord() {
       }
     } catch (error) {
       console.error("Erro na IA:", error);
-
-      // Better error handling with specific messages
       let errorMessage = "Falha ao carregar sugestão da IA";
       if (axios.isAxiosError(error)) {
         if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
           errorMessage =
             "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
-          // Fallback to mock data
           setAiResponse(MOCK_AI_RESPONSES.diagnostic);
           setAutofilledContent(true);
         } else if (error.response) {
-          // Server responded with an error status
           errorMessage = `Erro ${error.response.status}: ${
             error.response.data?.error || "Erro desconhecido do servidor"
           }`;
+          console.log("Detalhes do erro:", error.response.data);
         } else if (error.request) {
-          // Request was made but no response received
           errorMessage =
             "Servidor não respondeu ao pedido. Verifique a conexão.";
         }
       } else if (error instanceof Error) {
         errorMessage += `: ${error.message}`;
       }
-
       toast({
         title: "Erro",
         description: errorMessage,
@@ -254,9 +264,9 @@ export default function MedicalRecord() {
 
   const handleSugestaoIA = async () => {
     setAiLoading(true);
+    setAiResponse("");
 
     try {
-      // If backend is not available, use mock data
       if (!isBackendAvailable) {
         setTimeout(() => {
           const mockResponse = MOCK_AI_RESPONSES.treatment;
@@ -264,28 +274,32 @@ export default function MedicalRecord() {
           setEvolContent((prev) => prev + "\n\n" + mockResponse);
           setAutofilledContent(true);
           setAiLoading(false);
-        }, 1500); // Simulate API delay
+        }, 1500);
         return;
       }
 
-      const prompt = `Com base nos dados do paciente: ${JSON.stringify(
-        patient
-      )}, história médica: ${JSON.stringify(
-        medicalHistory
-      )}, sinais vitais: ${JSON.stringify(
-        vitalSigns
-      )}, e hipótese diagnóstica: ${
-        diagnosticHypothesis.description
-      }, sugira um plano de conduta incluindo exames, medicações e orientações. Responda em formato de texto simples.`;
+      const patientSummary = `${patient.name}, ${patient.age} anos, diagnóstico: ${diagnosticHypothesis.description}`;
+      const historySummary = `Histórico: ${
+        medicalHistory.comorbidities?.join(", ") || "Nenhum"
+      }, ${medicalHistory.surgeries?.join(", ") || "Nenhum"}`;
+      const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
+      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira plano de conduta com exames, medicações e orientações.`;
+      if (prompt.length > 1000) {
+        toast({
+          title: "Erro",
+          description: "O prompt excede o limite de 1000 caracteres.",
+          variant: "destructive",
+        });
+        setAiLoading(false);
+        return;
+      }
 
       const response = await axios.post(
         "http://localhost:5000/api/sugestao-ia",
-        { prompt },
+        { messages: [{ role: "user", content: prompt }] },
         {
-          timeout: 10000, // Set timeout to 10 seconds
-          headers: {
-            "Content-Type": "application/json",
-          },
+          timeout: 20000,
+          headers: { "Content-Type": "application/json" },
         }
       );
 
@@ -298,32 +312,27 @@ export default function MedicalRecord() {
       }
     } catch (error) {
       console.error("Erro na IA:", error);
-
-      // Better error handling with specific messages
       let errorMessage = "Falha ao carregar sugestão de conduta";
       if (axios.isAxiosError(error)) {
         if (error.code === "ECONNREFUSED" || error.code === "ERR_NETWORK") {
           errorMessage =
             "Não foi possível conectar ao servidor. Verifique se o servidor backend está em execução.";
-          // Fallback to mock data
           const mockResponse = MOCK_AI_RESPONSES.treatment;
           setAiResponse(mockResponse);
           setEvolContent((prev) => prev + "\n\n" + mockResponse);
           setAutofilledContent(true);
         } else if (error.response) {
-          // Server responded with an error status
           errorMessage = `Erro ${error.response.status}: ${
             error.response.data?.error || "Erro desconhecido do servidor"
           }`;
+          console.log("Detalhes do erro:", error.response.data);
         } else if (error.request) {
-          // Request was made but no response received
           errorMessage =
             "Servidor não respondeu ao pedido. Verifique a conexão.";
         }
       } else if (error instanceof Error) {
         errorMessage += `: ${error.message}`;
       }
-
       toast({
         title: "Erro",
         description: errorMessage,
