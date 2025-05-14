@@ -207,7 +207,7 @@ export default function MedicalRecord() {
       const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
       const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas. Responda em até 1500 caracteres, em formato de texto simples, sem divagações.`;
       console.log("Tamanho do prompt:", prompt.length);
-      if (prompt.length > 2000) {
+      if (prompt.length > 1000) {
         toast({
           title: "Erro",
           description: "O prompt excede o limite de 2000 caracteres.",
@@ -292,7 +292,7 @@ export default function MedicalRecord() {
       const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
       const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira plano de conduta com exames, medicações e orientações. Responda em até 500 caracteres, em formato de texto simples, sem divagações.`;
       console.log("Tamanho do prompt:", prompt.length);
-      if (prompt.length > 2000) {
+      if (prompt.length > 1000) {
         toast({
           title: "Erro",
           description: "O prompt excede o limite de 2000 caracteres.",
