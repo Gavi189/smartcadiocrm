@@ -147,7 +147,7 @@ export default function MedicalRecord() {
   useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        const response = await axios.get("https://backend-ebon.onrender.com/", {
+        const response = await axios.get("https://backend-ebon.onrender.com", {
           timeout: 2000,
         });
         if (response.status === 200) {
@@ -205,12 +205,12 @@ export default function MedicalRecord() {
         medicalHistory.comorbidities?.join(", ") || "Nenhum"
       }, ${medicalHistory.surgeries?.join(", ") || "Nenhum"}`;
       const vitalSummary = `PA ${vitalSigns.bloodPressure}, FC ${vitalSigns.heartRate}`;
-      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas. Responda em até 1500 caracteres, em formato de texto simples, sem divagações.`;
+      const prompt = `Com base em: ${patientSummary}, ${historySummary}, ${vitalSummary}, sugira diagnóstico diferencial e perguntas. Responda em até 500 caracteres, em formato de texto simples, sem divagações.`;
       console.log("Tamanho do prompt:", prompt.length);
       if (prompt.length > 1000) {
         toast({
           title: "Erro",
-          description: "O prompt excede o limite de 2000 caracteres.",
+          description: "O prompt excede o limite de 1000 caracteres.",
           variant: "destructive",
         });
         setAiLoading(false);
@@ -295,7 +295,7 @@ export default function MedicalRecord() {
       if (prompt.length > 1000) {
         toast({
           title: "Erro",
-          description: "O prompt excede o limite de 2000 caracteres.",
+          description: "O prompt excede o limite de 1000 caracteres.",
           variant: "destructive",
         });
         setAiLoading(false);
