@@ -107,15 +107,6 @@ P (Plano): Exames a solicitar, medicações prescritas, orientações, retorno.`
 
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs flex items-center gap-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 border-slate-100"
-          >
-            <Brain className="h-3.5 w-3.5 text-blue-700" />
-            Sugestões de IA
-          </Button>
-
           <Drawer>
             <DrawerTrigger asChild>
               <Button
