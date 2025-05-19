@@ -15,6 +15,7 @@ export default function ClientLayout({
     "/patients",
     "/patient-register",
     "/medical-record",
+    "/risk-calculator",
   ].includes(pathname);
 
   return isLayoutPage ? (
